@@ -71,3 +71,27 @@ for string in range(len(matrix[col])):
     for col in range(len(matrix)):
         print(matrix[col][string], end=' ')
 
+# Task 8 | Создать список любых объектов, в цикле напечатать в консоль: объект и его индекс
+
+obj = [1, 'fix', False, None, {1:'dict'}, (5,6,7)]
+for i in obj:
+    print(i, ' ', obj.index(i))
+
+# Task 9 | Создать список с тремя значениями 'to-delete'
+# и нескольми любыми другими, удалить из него все значения 'to-delete'
+
+spisok = ['one', 'to-delete', 2, 'to-delete', 5, 'to-delete']
+
+for i in spisok:
+    if i == 'to-delete':
+        spisok.remove(i)
+print(spisok)
+
+# Task 10 | Пройти по всем числам от 1 до 10 в обратную сторону (то есть: от 10 до 1), напечатать их в консоль
+
+a = range(1,11)
+b = []
+for i in a:
+    b.append(i)
+b.reverse()
+print(b)
