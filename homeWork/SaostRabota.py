@@ -1,3 +1,4 @@
+import random
 class Trash(object):
     def __init__(self, value):
         self.value = int(value)
@@ -42,19 +43,33 @@ class Musor(object):
         print(self.name, self.zapah)
 
 
+def TrashGenerator(sets):
+
+    names = []
+    for i in range(1,sets):
+        names.append('Муорс{}'.format(i))
+    svistvo = ['Коробка чая', 'Коробка печенья', 'Коробка сока', 'Банка кофе', 'Памперс']
+    values = ['со вкусоам тыквы', 'со вкусом дерьма', 'со вкусом яблока', 'со вкусом арабики', 'со вкусом сыра']
+    musor = []
+
+    for i in range(sets):
+        one = random.choice(svistvo)
+        two = random.choice(values)
+        musor.append(Musor(one,two))
+
+    return musor
+
+
+
+
+
+
+
 
 urna = Trash(5)
 pacetik = TrashPacet(3)
 
-trash = Musor('Куоск питцы', 'пахнит грибами и сыром')
-trash2 = Musor('Памперс', 'пахникт очень мерзко')
-trash3 = Musor('Гнилая рыба', 'амерзительная вонь')
-trash4 = Musor('Пачка сока', 'пахнет яблочным соком')
-
-
-urna.trash_value(trash, trash2, trash3, trash4)
-pacetik.trash_value(trash2, trash4, trash3)
-
-urna.trash_staus()
-pacetik.trash_staus()
-pacetik.trash_value(trash)
+test = TrashGenerator(int(2))
+print(test)
+urna.trash_value(*TrashGenerator(int(4)))
+print(urna.trash_staus())
