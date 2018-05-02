@@ -55,7 +55,7 @@ class Deck(object):
 doska1 = Deck()
 doska1.generatorDeck()
 
-def shipSellet(decks):
+def shipSellet(decks, ship):
     # vector Move = up    [+][0] if move >= 9
     # vector Move = down  [-][0] if move >= 0
     # vector Move = left  [0][-] if move >= 0
@@ -63,43 +63,51 @@ def shipSellet(decks):
 
     while True:
         vectors = ['up', 'down', 'left', 'right']
-        ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-        vectorRandom = random.choice(vectors)
+        vectorRandom = 'up'#random.choice(vectors)
 
         pointX = random.randrange(10)
         pointY = random.randrange(10)
         print(pointX, pointY)
 
         if vectorRandom == 'up':
-            if pointX - ships[0] + 1 >= 0:
-                sellect = int(pointX)
-                for i in range(ships[0]):
-                    decks.deck[sellect][pointY].status = True
-                    sellect -= 1 # рост вверх
+            sellect = int(pointX)
+            if pointX - ship + 1 >= 0:
+                if decks.deck[sellect][pointY].status != True:
+                    pass
+                    # проверить нет ли снизу и сверху ячеек.
+                for i in range(ship):
+                    if decks.deck[sellect][pointY - 1].status != True: # Ошибка из-за того что нельзя убавить ниже 0
+                        pass
+                    if decks.deck[sellect][pointY + 1].status != True:  # Ошибка из-за того что нельзя прибвать к 9
+                        pass
+
+
+                        decks.deck[sellect][pointY].status = True
+                        sellect -= 1 # рост вверх
                 break
 
 
         elif vectorRandom == 'down':
-            if 9 >= pointX + ships[0] - 1 >= 0:
+            if 9 >= pointX + ship - 1 >= 0:
                 sellect = int(pointX)
-                for i in range(ships[0]):
+                for i in range(ship):
                     decks.deck[sellect][pointY].status = True
                     sellect += 1  # рост вниз
 
                 break
 
         elif vectorRandom == 'left':
-            if 9 >= pointY - ships[0] + 1 >= 0:
+            if 9 >= pointY - ship + 1 >= 0:
                 sellect = int(pointY)
-                for i in range(ships[0]):
+                for i in range(ship):
                     decks.deck[pointX][sellect].status = True
                     sellect -= 1  # рост в лево
                 break
 
         elif vectorRandom == 'rigth':
-            if 9 >= pointY + ships[0] - 1 >= 0:
+            if 9 >= pointY + ship - 1 >= 0:
                 sellect = int(pointY)
-                for i in range(ships[0]):
+                for i in range(ship):
                     decks.deck[pointX][sellect].status = True
                     sellect += 1  # рост в право
                 break
@@ -111,5 +119,6 @@ def shipSellet(decks):
 
 
 
-shipSellet(doska1)
+shipSellet(doska1,3)
+shipSellet(doska1,4)
 doska1.printer()
