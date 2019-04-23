@@ -137,12 +137,15 @@ class Table():
                                 start_point - 11):
 
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
-                                self.deck[start_point].name = '🞓'
-                                self.deck[start_point].status = 3
+                                korablik = Ship(ship, start_point, vector, deck)
+                                # self.deck[start_point].name = '🞓'
+                                # self.deck[start_point].status = 3
+                                deck[start_point] = korablik
                                 next_point = start_point
                                 for i in range(ship):
-                                    self.deck[next_point].name = '🞓'
-                                    self.deck[next_point].status = 3
+                                    deck[next_point] = korablik
+                                    # self.deck[next_point].name = '🞓'
+                                    # self.deck[next_point].status = 3
                                     next_point += 12
 
                                 return True
@@ -183,13 +186,17 @@ class Table():
                     # Проверят, не заняти ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(valid_start - 12):
+                            korablik = Ship(ship, start_point, vector, deck)
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
-                                deck[start_point].name = '🞓'
-                                deck[start_point].status = 3
+                                # deck[start_point].name = '🞓'
+                                # deck[start_point].status = 3
+                                deck[start_point] = korablik
                                 next_point = start_point
+
                                 for i in range(ship):
-                                    deck[next_point].name = '🞓'
-                                    deck[next_point].status = 3
+                                    deck[next_point] = korablik
+                                    # deck[next_point].name = '🞓'
+                                    # deck[next_point].status = 3
                                     next_point -= 1
                                 return True
                             else:
@@ -225,13 +232,16 @@ class Table():
                     # Проверят, не заняти ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(valid_start - 12):
+                            korablik = Ship(ship, start_point, vector, deck)
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
-                                deck[start_point].name = '🞓'
-                                deck[start_point].status = 3
+                                # deck[start_point].name = '🞓'
+                                # deck[start_point].status = 3
+                                deck[start_point] = korablik
                                 next_point = start_point
                                 for i in range(ship):
-                                    deck[next_point].name = '🞓'
-                                    deck[next_point].status = 3
+                                    deck[next_point] = korablik
+                                    # deck[next_point].name = '🞓'
+                                    # deck[next_point].status = 3
                                     next_point += 1
                                 return True
 
@@ -249,11 +259,20 @@ class Table():
         vectors = ['left', 'right', 'up', 'down']
 
         ships = {4: 1, 3: 2, 2: 3, 1: 4}
-        ship_point('up', 80, 3, self.deck)
-        # print(self.deck[128].damage(128))
-        # print(self.deck[116].damage(116))
-        # print(self.deck[104].damage(104))
+        point = 130
+        ship_point('left', point, 4, self.deck)
 
+
+        print(self.deck[point].damage(point))
+        print(self.deck[point - 1].damage(point - 1))
+        print(self.deck[point - 2].damage(point - 2))
+        print(self.deck[point - 3].damage(point - 3))
+
+        # ship_point('down', 75, 4, self.deck)
+        # print(self.deck[75].damage(75))
+        # print(self.deck[75 + 12].damage(75 + 12))
+        # print(self.deck[75 + 24].damage(75 + 24))
+        # print(self.deck[75 + 36].damage(75 + 36))
 
 
         # for i in ships:
