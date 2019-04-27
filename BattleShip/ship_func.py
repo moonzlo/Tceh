@@ -3,8 +3,6 @@ class Ship():
         self.status = 3           # Для понимания что это корабль.
         self.health = type        # Тип коробля, он же его здоровье.
         self.start_index = start  # Стартовый индекс позиции коробля.
-
-
         self.deck = deck          # Экземпляр доски окраски границ.
         self.type = type          # Для последующий итерации.
         self.vector = vector      # Направление коробля.
@@ -242,7 +240,8 @@ class Ship():
             self.health -= 1
             self.status = 4
             __class__.kill(self)
-            return True
+            return 'kill'
+
         else:
             self.health -= 1
             return 'boom'

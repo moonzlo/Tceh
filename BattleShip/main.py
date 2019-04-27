@@ -259,14 +259,16 @@ class Table():
         vectors = ['left', 'right', 'up', 'down']
 
         ships = {4: 1, 3: 2, 2: 3, 1: 4}
-        point = 130
-        ship_point('left', point, 4, self.deck)
 
-
-        print(self.deck[point].damage(point))
-        print(self.deck[point - 1].damage(point - 1))
-        print(self.deck[point - 2].damage(point - 2))
-        print(self.deck[point - 3].damage(point - 3))
+        #  ---DEMO---
+        # point = 101
+        # ship_point('left', point, 2, self.deck)
+        #
+        #
+        # print(self.deck[point].damage(point))
+        # print(self.deck[point - 1].damage(point - 1))
+        # print(self.deck[point - 2].damage(point - 2))
+        # print(self.deck[point - 3].damage(point - 3))
 
         # ship_point('down', 75, 4, self.deck)
         # print(self.deck[75].damage(75))
@@ -275,18 +277,18 @@ class Table():
         # print(self.deck[75 + 36].damage(75 + 36))
 
 
-        # for i in ships:
-        #     for x in range(ships.get(i)):
-        #         while True:
-        #             random_start = random.randint(13, 131)
-        #             vector = random.choice(vectors)
-        #             ship = ship_point(vector, random_start, i, self.deck)
-        #
-        #             if ship == True:
-        #                 break
-        #
-        #             else:
-        #                 continue
+        for i in ships:
+            for x in range(ships.get(i)):
+                while True:
+                    random_start = random.randint(13, 131)
+                    vector = random.choice(vectors)
+                    ship = ship_point(vector, random_start, i, self.deck)
+
+                    if ship == True:
+                        break
+
+                    else:
+                        continue
 
     def __repr__(self):
         stroka = ''
@@ -368,5 +370,16 @@ player2 = Table('PLAYER 2')
 game1 = Game(player1, player2)
 game1.game_init()
 
-print(game1.player1)
-print(game1.player2)
+deck = player1.deck
+import AIplayers
+
+test = AIplayers.AI_player(deck)
+# deck[94].status = 4
+
+test.play()
+test.play()
+test.play()
+print(player1)
+
+
+print(test.memory)
