@@ -88,6 +88,7 @@ class AI_player:
     def play(self):
 
         def valid_shot(index):
+
             if hasattr(self.deck[index], 'status'):
                 status = self.deck[index].status
                 if status != 1 and status != 2 and status != 4:
@@ -117,6 +118,7 @@ class AI_player:
         elif len(self.memory[-1]) == 1:
             shot_index = self.memory[-1][0] + vectors[self.vector]
             validator = valid_shot(shot_index)           # Проверям доступность выстрела.
+
             print(shot_index)
             print(self.vector)
             if validator:
@@ -163,10 +165,10 @@ class AI_player:
 
 
                 else:  # Если второй выстрел производиться в неподходящую клетку, меняем вектор.
-                    if self.vector != 4:
+                    if self.vector != 3:
                         self.vector += 1
                         return True
-                    elif self.vector > 4:
+                    elif self.vector > 2:
                         self.vector = 0
                         return True
 
@@ -243,10 +245,10 @@ class AI_player:
 
 
                 else:  # Если второй выстрел производиться в неподходящую клетку, меняем вектор.
-                    if self.vector != 4:
+                    if self.vector != 3:
                         self.vector += 1
                         return True
-                    elif self.vector > 4:
+                    elif self.vector > 2:
                         self.vector = 0
                         return True
 
