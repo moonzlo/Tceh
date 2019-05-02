@@ -17,6 +17,7 @@ class AI_player:
         self.deck = war_deck  # Доска с кораблями противника.
         self.memory = [[]]    # Память, из списка удачных выстрелов.
         self.vector = 0
+        self.error_mem = 0
 
     @logger
     def shot(self, shot_index):
@@ -37,6 +38,7 @@ class AI_player:
 
                 if shot == 'kill':  # При возвращаении 'kill' следует что корабль был убит.
                     self.vector = 0
+                    self.error_mem = 0
                     return 'kill'
 
                 elif shot == 'boom':  # boom возвращается только в случае успешного попадания.
@@ -106,6 +108,7 @@ class AI_player:
             if shot == 'kill':
                 self.memory[-1] = 'KILL'
                 self.memory.append([])
+                self.error_mem = 0
                 return True
 
             elif shot == True:
@@ -127,6 +130,7 @@ class AI_player:
                 if shot == 'kill':
                     self.memory[-1] = 'KILL'
                     self.memory.append([])
+                    self.error_mem = 0
                     return True
 
                 elif shot == True:
@@ -185,6 +189,7 @@ class AI_player:
                 if shot == 'kill':  # Если выстрел был удачным.
                     self.memory[-1] = 'KILL'
                     self.memory.append([])
+                    self.error_mem = 0
                     return True
 
 
@@ -219,32 +224,42 @@ class AI_player:
                         f' \nВалидатор вернул {validator}'
 
             else:
+
                 print(f'Выстрел невозможен, валидатор вернул False, в памяти {self.memory}, вектор {self.vector}')
-                if len(self.memory[-1]) > 2:  # Если выстрелов было больше одного, значит вектор был верным.
-                    # Инверсиурем вектор направления.
+                if len(self.memory[-1]) > 1:  # Если выстрелов было больше одного, значит вектор был верным.
+                    if self.error_mem < 5:
+                        print('Работает <----------')
+                        # Инверсиурем вектор направления.
 
-                    if self.vector == 0:  # -1
-                        self.vector = 1
+                        if self.vector == 0:  # -1
+                            self.vector = 1
+                            self.memory[-1][-1] = self.memory[-1][0]
+                            self.error_mem += 1
+                            return True
+
+                        elif self.vector == 1:  # +1
+                            self.vector = 0
+                            self.memory[-1][-1] = self.memory[-1][0]
+                            self.error_mem += 1
+                            return True
+
+                        elif self.vector == 2:  # +12
+                            self.vector = 3
+                            self.memory[-1][-1] = self.memory[-1][0]
+                            self.error_mem += 1
+                            return True
+
+                        elif self.vector == 3:  # -12
+                            self.vector = 2
+                            self.memory[-1][-1] = self.memory[-1][0]
+                            self.error_mem += 1
+                            return True
+                    else:
+                        print('Память ошибок переполнена, делаем сброс к первому индексу.')
                         self.memory[-1][-1] = self.memory[-1][0]
-                        return True
-
-                    elif self.vector == 1:  # +1
-                        self.vector = 0
-                        self.memory[-1][-1] = self.memory[-1][0]
-                        return True
-
-                    elif self.vector == 2:  # +12
-                        self.vector = 3
-                        self.memory[-1][-1] = self.memory[-1][0]
-                        return True
-
-                    elif self.vector == 3:  # -12
-                        self.vector = 2
-                        self.memory[-1][-1] = self.memory[-1][0]
-                        return True
-
 
                 else:  # Если второй выстрел производиться в неподходящую клетку, меняем вектор.
+                    print('Я опят ТУТ >_<')
                     if self.vector != 3:
                         self.vector += 1
                         return True

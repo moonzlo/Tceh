@@ -1,5 +1,6 @@
 import random
 from ship_func import Ship
+from AIplayers import *
 
 class Kletka():
     def __init__(self, x):
@@ -41,7 +42,7 @@ class Table():
 
     def auto_ships(self):
 
-        def ship_point(vector, start_point, ship, deck):
+        def ship_point(vector, start_point, ship, deck, deck_war):
 
             def index_validator(index):
                 if deck[index].status != 0:
@@ -88,7 +89,7 @@ class Table():
 
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
 
-                                korablik = Ship(ship, start_point, vector, deck)
+                                korablik = Ship(ship, start_point, vector, deck, deck_war)
                                 # deck[start_point].name = '🞓'
                                 # deck[start_point].status = 3
                                 deck[start_point] = korablik
@@ -137,7 +138,7 @@ class Table():
                                 start_point - 11):
 
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
-                                korablik = Ship(ship, start_point, vector, deck)
+                                korablik = Ship(ship, start_point, vector, deck, deck_war)
                                 # self.deck[start_point].name = '🞓'
                                 # self.deck[start_point].status = 3
                                 deck[start_point] = korablik
@@ -186,7 +187,7 @@ class Table():
                     # Проверят, не заняти ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(valid_start - 12):
-                            korablik = Ship(ship, start_point, vector, deck)
+                            korablik = Ship(ship, start_point, vector, deck, deck_war)
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
                                 # deck[start_point].name = '🞓'
                                 # deck[start_point].status = 3
@@ -232,7 +233,7 @@ class Table():
                     # Проверят, не заняти ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(valid_start - 12):
-                            korablik = Ship(ship, start_point, vector, deck)
+                            korablik = Ship(ship, start_point, vector, deck, deck_war)
                             if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
                                 # deck[start_point].name = '🞓'
                                 # deck[start_point].status = 3
@@ -282,7 +283,7 @@ class Table():
                 while True:
                     random_start = random.randint(13, 131)
                     vector = random.choice(vectors)
-                    ship = ship_point(vector, random_start, i, self.deck)
+                    ship = ship_point(vector, random_start, i, self.deck, self.deck_war)
 
                     if ship == True:
                         break
@@ -328,58 +329,23 @@ class Table():
 
 
 
-class Game():
-    def __init__(self, deck1, deck2):
-        self.player1 = deck1
-        self.player2 = deck2
-
-    def game_init(self):
-        """Инициируем поле, и заполняем его кораблями"""
-        self.player1.table_init()
-        self.player2.table_init()
-        self.player1.auto_ships()
-        self.player2.auto_ships()
-
-    def navigation(self, liter, num):
-        """Возвращает индекс запрашиваемого квадрата"""
-        liters = {
-            'A': [i for i in range(12, 23)],
-            'B': [i for i in range(24, 35)],
-            'C': [i for i in range(36, 47)],
-            'D': [i for i in range(48, 59)],
-            'E': [i for i in range(60, 71)],
-            'F': [i for i in range(72, 83)],
-            'G': [i for i in range(84, 95)],
-            'H': [i for i in range(96, 107)],
-            'I': [i for i in range(108, 119)],
-            'J': [i for i in range(120, 132)]
-        }
-
-        if liter.isalpha() and 10 >= num > 0:
-            data = liters.get(liter.upper())
-            return data[num]
-
-        else:
-            return False
-
-
-player1 = Table('PLAYER 1')
-player2 = Table('PLAYER 2')
-
-
-game1 = Game(player1, player2)
-game1.game_init()
-
-deck = player1.deck
-import AIplayers
-
-test = AIplayers.AI_player(deck)
-# deck[94].status = 4
-
-test.play()
-test.play()
-test.play()
-print(player1)
-
-
-print(test.memory)
+# player1 = Table('PLAYER 1')
+# player2 = Table('PLAYER 2')
+#
+#
+# game1 = Game(player1, player2)
+# game1.game_init()
+#
+# deck = player1.deck
+# import AIplayers
+#
+# test = AIplayers.AI_player(deck)
+# # deck[94].status = 4
+#
+# test.play()
+# test.play()
+# test.play()
+# print(player1)
+#
+#
+# print(test.memory)
