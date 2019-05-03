@@ -29,9 +29,6 @@ class Ship():
                     return False
 
             start_index = index_validator(start_point)
-            # print(start_index)
-            # import pdb
-            # pdb.set_trace()
 
             if vector == 'up':
                 if start_index:
@@ -184,48 +181,41 @@ class Ship():
                     else:
                         return False
 
-                elif vector == 'right':
-                    if start_index:
-                        valid_num = 0
-                        nums = start_point
-
-                        for _ in range(ship):
-                            next_index = nums  # Первое движение вверх.
-                            # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
-                            point = ship_check(next_index)
-                            right_index = ship_check(next_index + 12)
-                            lift_index = ship_check(next_index - 12)
-                            valid_point = index_validator(next_index)
-
-                            if 12 < next_index < 131:
-                                if point and right_index and lift_index and valid_point:
-                                    valid_num += 1
-                            else:
-                                return False
-                            nums += 1
-
-                        valid = start_point + ship
-                        valid_start = start_point - 1
-
-                        # Проверят, не заняти ли последняя клетка и её соседи.
-                        if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
-                            if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(
-                                    valid_start - 12):
-                                korablik = Ship(ship, start_point, vector, deck, deck_war)
-                                if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
-                                    # deck[start_point].name = '🞓'
-                                    # deck[start_point].status = 3
-                                    deck[start_point] = korablik
-                                    next_point = start_point
-                                    for i in range(ship):
-                                        deck[next_point] = korablik
-                                        # deck[next_point].name = '🞓'
-                                        # deck[next_point].status = 3
-                                        next_point += 1
-                                    return True
-
-                                else:
-                                    return False
+            elif vector == 'right':
+                if start_index:
+                    valid_num = 0
+                    nums = start_point
+                    for _ in range(ship):
+                        next_index = nums  # Первое движение вверх.
+                        # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
+                        point = ship_check(next_index)
+                        right_index = ship_check(next_index + 12)
+                        lift_index = ship_check(next_index - 12)
+                        valid_point = index_validator(next_index)
+                        if 12 < next_index < 131:
+                            if point and right_index and lift_index and valid_point:
+                                valid_num += 1
+                        else:
+                            return False
+                        nums += 1
+                    valid = start_point + ship
+                    valid_start = start_point - 1
+                    # Проверят, не заняти ли последняя клетка и её соседи.
+                    if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
+                        if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(
+                                valid_start - 12):
+                            korablik = Ship(ship, start_point, vector, deck, deck_war)
+                            if valid_num == ship:  # Проверяет, все ли клетки были пусты и пригодны для жизни =)
+                                # deck[start_point].name = '🞓'
+                                # deck[start_point].status = 3
+                                deck[start_point] = korablik
+                                next_point = start_point
+                                for i in range(ship):
+                                    deck[next_point] = korablik
+                                    # deck[next_point].name = '🞓'
+                                    # deck[next_point].status = 3
+                                    next_point += 1
+                                return True
                             else:
                                 return False
                         else:
@@ -233,9 +223,11 @@ class Ship():
                     else:
                         return False
                 else:
-                    print('Неверный вектор')
+                    return False
+            else:
+                print('Неверный вектор')
 
-        test  = ship_point(self.vector, self.start_index, self.type, self.deck, self.deck_war)
+        test = ship_point(self.vector, self.start_index, self.type, self.deck, self.deck_war)
 
         return test
 

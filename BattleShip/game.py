@@ -76,6 +76,7 @@ class Game:
             return 'Неверная буква'
 
 
+
     def ship_installation(self):
         """Суть данного метода, это цикл запросов на установку коробля. Сначала Игрок1 до тех пор пока не будут
         поставлены все корабли, а затем Игрок 2. Механизм работы, через бесконечный цикл"""
@@ -130,8 +131,58 @@ class Game:
                 except ValueError:
                     print('Нужно ввести ЦИФРУ!')
 
+        print('ПЕРВЫЙ ИГРОК ЗАКОНЧИЛ РАССТАНОВКУ, ПРИШЛА ПОРА ИГРОКА 2')
+
+        for ship in ships:
+            while True:  # Запускаем цикл запроса воода данных от пользователя.
+                try:
+                    liter = input(f'Введите БУКВУ широты, на Англйском языке, для установки {ship} палубника: ')
+                    num = int(input('Введите цифру от 1 до 10, вектора долготы: '))
+                    print('''
+                    Выбирете вектор установки корабля: 
+                    Влево  = 0
+                    Вправо = 1
+                    Вверх  = 2
+                    Вниз   = 3
+                    ''')
+                    vector = int(input('Введите НОМЕР вектора по которому будет поставлен кораблик (0 - 3) : '))
+
+                    if liter.upper() in self.liters.keys():
+                        if 0 < num <= 10:
+                            if 0 <= vector <= 3:
+                                index = __class__.navigation(self, liter, num)
+
+                                if index != False:
+
+                                    my_ship = Ship(ship, index, vectors[vector],
+                                                                     self.player2.deck, self.player2.deck_war)
+
+                                    test = my_ship.auto_building()
+
+                                    if test:
+                                        print(self.player2)
+                                        break
+                                    else:
+                                        print('Данное дейсвтие не было произведено')
+                                        continue
+                                else:
+                                    print('Неверный индекс вектора')
+
+                        else:
+                            if num > 10:
+                                print('Ваше чилсло БОЛЬШЕ!')
+
+                            else:
+                                print('Вы ввели чилсо МЕНЬШЕ!')
+                    else:
+                        print('Такой буквы НЕТ')
+
+                except ValueError:
+                    print('Нужно ввести ЦИФРУ!')
 
 
+    def menu(self):
+        pass
 
 gamer = Game('Игрок1', 'Игрок2')
 
