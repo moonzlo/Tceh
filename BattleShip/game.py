@@ -195,8 +195,52 @@ class Game:
 
 
 
-def battle(game):
-    pass
+def battle(game_set):
+    print(f'Начёнм игру. Первым ходит {game_set.player1.player_name}')
+    input('Нажми Enter для продолжения')
+
+    def shot(player):
+        try:
+            print(f'Сейчас стреляет игрок {player.player_name}')
+            print('Куда будем стрелять? ')
+            vector = input('Введите английскую букву от A до J: ')
+            num = int(input('Введите номер оси Y: '))
+
+            shot_index = game_set.navigation(vector, num)
+
+            return shot_index
+
+        except ValueError:
+            print('Вы ввели НЕ ЧИСЛО')
+            return True
+
+
+    while True:  # Цикл игры
+        index = 0
+        players = [game_set.player1, game_set.player2]
+
+        if index == 0:   # Стрелят игрок 1 в игрока 2
+            shot_index = shot(players[index])
+            deck = game_set.player2.deck
+            if deck[shot_index].status == 3:
+                deck[shot_index].name = '▣'
+                deck[shot_index].status = 2
+
+                fire = deck[shot_index].damage(shot_index)
+
+                print(game_set.player2)
+            elif deck[shot_index].status == 0:
+                print('Промазал =(')
+                deck[shot_index].name = '▣'
+                deck[shot_index].status = 2
+
+
+        elif index == 1:  # Стрелят игрок 2 в игрока 1
+            shot_index = shot(players[index])
+            deck = game_set.player1.deck
+
+        else:
+            print('Ошибка индекса')
 
 
 while True:  # Цикл основного меню.
@@ -229,12 +273,22 @@ while True:  # Цикл основного меню.
                 mode = int(input('Введите ЧИСЛО: '))
                 if 0 < mode <= 2:
 
-                    if mode == 1:
+                    if mode == 1:  # Ручная расстановка + цикл игры
+
                         game_set.ship_installation()
                         print(battle(game_set))
                         break
 
-                    else:
+                    else:          # Автоматичиская расстановка + цикл игры
+                        p1 = game_set.player1
+                        p1.auto_ships()
+                        p2 = game_set.player2
+                        p2.auto_ships()
+
+                        print(game_set.player1)
+                        print(game_set.player2)
+
+                        print(battle(game_set))
                         pass
 
                 else:
