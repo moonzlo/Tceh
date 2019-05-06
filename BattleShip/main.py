@@ -40,7 +40,7 @@ class Table():
         for x in self.deck_war[131:]: x.name = '▨'
         for x in self.deck[131:]: x.status = 1
 
-    def auto_ships(self):
+    def auto_ships(self, deck_war):
 
         def ship_point(vector, start_point, ship, deck, deck_war):
 
@@ -283,7 +283,7 @@ class Table():
                 while True:
                     random_start = random.randint(13, 131)
                     vector = random.choice(vectors)
-                    ship = ship_point(vector, random_start, i, self.deck, self.deck_war)
+                    ship = ship_point(vector, random_start, i, self.deck, deck_war)
 
                     if ship == True:
                         break

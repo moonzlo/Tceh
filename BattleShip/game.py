@@ -103,7 +103,7 @@ class Game:
                                 if index != False:
 
                                     my_ship = Ship(ship, index, vectors[vector],
-                                                                     self.player1.deck, self.player1.deck_war)
+                                                                     self.player1.deck, self.player2.deck_war)
 
                                     test = my_ship.auto_building()
 
@@ -151,7 +151,7 @@ class Game:
                                 if index != False:
 
                                     my_ship = Ship(ship, index, vectors[vector],
-                                                                     self.player2.deck, self.player2.deck_war)
+                                                                     self.player2.deck, self.player1.deck_war)
 
                                     test = my_ship.auto_building()
 
@@ -221,18 +221,30 @@ def battle(game_set):
 
         if index == 0:   # Стрелят игрок 1 в игрока 2
             shot_index = shot(players[index])
-            deck = game_set.player2.deck
+            deck = game_set.player2.deck     # Доска врага.
+
+            war = game_set.player1.deck_war  # Доска для отметок
+
             if deck[shot_index].status == 3:
                 deck[shot_index].name = '▣'
                 deck[shot_index].status = 2
+                war[shot_index].name = '▣'
 
                 fire = deck[shot_index].damage(shot_index)
 
                 print(game_set.player2)
+                print(game_set.player1)
+
             elif deck[shot_index].status == 0:
+
                 print('Промазал =(')
-                deck[shot_index].name = '▣'
+                war[shot_index].name = '🞔'
+
+                deck[shot_index].name = '🞔'
                 deck[shot_index].status = 2
+
+            else:
+                print('что-то пошло не так')
 
 
         elif index == 1:  # Стрелят игрок 2 в игрока 1
@@ -281,9 +293,9 @@ while True:  # Цикл основного меню.
 
                     else:          # Автоматичиская расстановка + цикл игры
                         p1 = game_set.player1
-                        p1.auto_ships()
+                        p1.auto_ships(game_set.player2.deck_war)
                         p2 = game_set.player2
-                        p2.auto_ships()
+                        p2.auto_ships(game_set.player1.deck_war)
 
                         print(game_set.player1)
                         print(game_set.player2)
