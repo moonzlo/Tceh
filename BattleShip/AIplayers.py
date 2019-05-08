@@ -89,6 +89,7 @@ class AI_player:
     @logger
     def play(self):
 
+
         def valid_shot(index):
 
             if hasattr(self.deck[index], 'status'):

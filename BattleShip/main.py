@@ -261,23 +261,6 @@ class Table():
 
         ships = {4: 1, 3: 2, 2: 3, 1: 4}
 
-        #  ---DEMO---
-        # point = 101
-        # ship_point('left', point, 2, self.deck)
-        #
-        #
-        # print(self.deck[point].damage(point))
-        # print(self.deck[point - 1].damage(point - 1))
-        # print(self.deck[point - 2].damage(point - 2))
-        # print(self.deck[point - 3].damage(point - 3))
-
-        # ship_point('down', 75, 4, self.deck)
-        # print(self.deck[75].damage(75))
-        # print(self.deck[75 + 12].damage(75 + 12))
-        # print(self.deck[75 + 24].damage(75 + 24))
-        # print(self.deck[75 + 36].damage(75 + 36))
-
-
         for i in ships:
             for x in range(ships.get(i)):
                 while True:

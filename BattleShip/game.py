@@ -3,7 +3,6 @@ import time
 
 from main import *
 
-
 class Game:
     def __init__(self, player1, player2):
         self.liters = {
@@ -40,23 +39,6 @@ class Game:
         self.player1.table_init()
         self.player2.table_init()
 
-        if self.player2.player_name == 'AI':
-            if self.player1.player_name == 'AI':
-
-                self.ai = AI_player(self.player2.deck)
-                self.player2.auto_ships()
-                self.ai_deck = self.player2.deck
-
-                self.ai2 = AI_player(self.player1.deck)
-                self.player1.auto_ships()
-                self.ai_deck = self.player1.deck
-
-            else:
-                self.ai = AI_player(self.player2.deck)
-                self.player2.auto_ships()
-                self.ai_deck = self.player2.deck
-
-            print('Отработал')
 
     def navigation(self, liter, num):
         """Возвращает индекс запрашиваемого квадрата"""
@@ -70,8 +52,6 @@ class Game:
 
         else:
             return 'Неверная буква'
-
-
 
     def ship_installation(self):
         """Суть данного метода, это цикл запросов на установку коробля. Сначала Игрок1 до тех пор пока не будут
@@ -103,7 +83,7 @@ class Game:
                                 if index != False:
 
                                     my_ship = Ship(ship, index, vectors[vector],
-                                                                     self.player1.deck, self.player2.deck_war)
+                                                   self.player1.deck, self.player2.deck_war)
 
                                     test = my_ship.auto_building()
 
@@ -151,7 +131,7 @@ class Game:
                                 if index != False:
 
                                     my_ship = Ship(ship, index, vectors[vector],
-                                                                     self.player2.deck, self.player1.deck_war)
+                                                   self.player2.deck, self.player1.deck_war)
 
                                     test = my_ship.auto_building()
 
@@ -194,7 +174,6 @@ class Game:
         ''')
 
 
-
 def battle(game_set):
     print(f'Начёнм игру. Первым ходит {game_set.player1.player_name}')
     input('Нажми Enter для продолжения')
@@ -222,10 +201,9 @@ def battle(game_set):
 
         players = [game_set.player1, game_set.player2]
 
-        if index == 0:   # Стрелят игрок 1 в игрока 2
-            print(index)
+        if index == 0:  # Стрелят игрок 1 в игрока 2
             shot_index = shot(players[index])
-            deck = game_set.player2.deck     # Доска врага.
+            deck = game_set.player2.deck  # Доска врага.
 
             war = game_set.player1.deck_war  # Доска для отметок
 
@@ -252,17 +230,13 @@ def battle(game_set):
                 deck[shot_index].status = 2
 
             else:
-                # import pdb
-                # pdb.set_trace()
-                print(deck[shot_index].status)
-                print('что-то пошло не так')
+                print(f'что-то пошло не так, текущий статус = {deck[shot_index].status}')
 
-
-        elif index == 1:  # Стрелят игрок 2 в игрока 1
+        elif index == 1:                      # Стрелят игрок 2 в игрока 1
             shot_index = shot(players[index])
             deck = game_set.player1.deck
 
-            war = game_set.player2.deck_war  # Доска для отметок
+            war = game_set.player2.deck_war   # Доска для отметок
 
             if deck[shot_index].status == 3:
                 print('ПОПАЛ :D ')
@@ -293,6 +267,85 @@ def battle(game_set):
         else:
             print('Ошибка индекса')
 
+    if socer[0] == 10:
+        return f'Игрок {game_set.player1.player_name} победил!!! '
+
+    elif socer[1] == 10:
+        return f'Игрок {game_set.player2.player_name} победил!!! '
+
+    else:
+        return 'Я сломался'
+
+
+def ai_battle(game_set):
+
+    def shot(player):
+        try:
+            print(f'Сейчас стреляет игрок {player.player_name}')
+            print('Куда будем стрелять? ')
+            print(player)
+
+            vector = input('Введите английскую букву от A до J: ')
+            num = int(input('Введите номер оси Y: '))
+
+            shot_index = game_set.navigation(vector, num)
+
+            return shot_index
+
+        except ValueError:
+            print('Вы ввели НЕ ЧИСЛО')
+            return True
+
+    socer = [[], []]  # В список записываются убитые корабли.
+    index = 0
+
+    while len(socer[0]) < 10 or len(socer[1]) < 10:  # Цикл игры
+
+        players = [game_set.player1, game_set.player2]
+
+        if index == 0:  # Стрелят игрок 1 в игрока 2
+            shot_index = shot(players[index])
+            deck = game_set.player2.deck  # Доска врага.
+
+            war = game_set.player1.deck_war  # Доска для отметок
+
+            if deck[shot_index].status == 3:
+                print('Попал!!!')
+                deck[shot_index].name = '▣'
+                war[shot_index].name = '▣'
+
+                fire = deck[shot_index].damage(shot_index)
+
+                if fire == 'kill':
+                    socer[0].append(1)
+
+                else:
+                    continue
+
+            elif deck[shot_index].status == 0:
+                index = 1
+
+                print(f'Промазал =( Теперь ходит игрок {game_set.player2.player_name}')
+                time.sleep(3)
+                war[shot_index].name = '🞔'
+
+                deck[shot_index].name = '🞔'
+                deck[shot_index].status = 2
+
+            else:
+                print(f'что-то пошло не так, текущий статус = {deck[shot_index].status}')
+
+        elif index == 1:                      # Стрелят ИИ
+            ai = AI_player(game_set.player1.deck)
+            play_ai = ai.play()
+            if play_ai == False:
+                print('Компютер промохнулся =)')
+                index = 0
+
+            else:
+                print('Компютер попал =(')
+                continue
+
 
 while True:  # Цикл основного меню.
     print('''
@@ -302,13 +355,12 @@ while True:  # Цикл основного меню.
     
     2 - Играть против ИИ (Player1 & AiPlayer)
     
-    3 - Смотреть за игрой ИИ против ИИ 
     ''')
     try:
-        menu_scelect = int(input('Введи номер пункта меню: '))
-        if 0 < menu_scelect <= 3:
+        menu_select = int(input('Введи номер пункта меню: '))
+        if 0 < menu_select <= 3:
 
-            if menu_scelect == 1:    # Игрок против Игрока
+            if menu_select == 1:  # Игрок против Игрока
                 player_name1 = input('Введите имя для первого игрока: ')
                 player_name2 = input('Введите имя для второго игрока: ')
 
@@ -324,34 +376,54 @@ while True:  # Цикл основного меню.
                 mode = int(input('Введите ЧИСЛО: '))
                 if 0 < mode <= 2:
 
-                    if mode == 1:  # Ручная расстановка + цикл игры
+                    if mode == 1:                     # Ручная расстановка + цикл игры
 
                         game_set.ship_installation()
                         print(battle(game_set))
                         break
 
-                    else:          # Автоматичиская расстановка + цикл игры
+                    else:                             # Автоматичиская расстановка + цикл игры
                         p1 = game_set.player1
                         p1.auto_ships(game_set.player2.deck_war)
                         p2 = game_set.player2
                         p2.auto_ships(game_set.player1.deck_war)
 
-                        print(game_set.player1)
-                        print(game_set.player2)
-
-                        print(battle(game_set))
-                        pass
-
                 else:
                     print('Такого пункта небыло!')
                     time.sleep(1)
 
+            elif menu_select == 2:  # Игрок против ИИ
+                print('''
+                В режиме против ИИ ваш соперник будет производить автоматичиские
+                
+                1 - Обычный ИИ который будет стрелять в случайном порядке.
+                
+                2 - Продвинутый ИИ который стреляет по алгоритму скоса.
+                
+                3 - Эксперт, не только стреляет по алгоритму, но и ставит корабли вдоль стенок.
+                ''')
 
-            elif menu_scelect == 2:  # Игрок против ИИ
-                pass
+                ai_menu = int(input('Введите число: '))
 
-            elif menu_scelect == 3:   # ИИ против ИИ
-                pass
+                if ai_menu == 1:
+
+                    game_set = Game('Игрок 1', 'AI')
+                    game_set.player2.auto_ships(game_set.player1.deck_war)
+                    game_set.player1.auto_ships(game_set.player2.deck_war)
+                    print(game_set.player2)
+                    print(game_set.player1)
+
+                    print(ai_battle(game_set))
+
+                elif ai_menu == 2:
+                    pass
+
+                elif ai_menu == 3:
+                    pass
+
+                else:
+                    print('К сожелению такого пункта меню нет.')
+                    time.sleep(1)
 
 
 
@@ -362,6 +434,3 @@ while True:  # Цикл основного меню.
     except ValueError:
         print('Вводить нужно только ЧИСЛО!!!')
         time.sleep(2)
-
-
-
