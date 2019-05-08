@@ -293,19 +293,31 @@ class Table():
 
     def __repr__(self):
         stroka = ''
-        stroka += f'==============={self.player_name}===============\n'
+        stroka += f'==============={self.player_name}==================\n'
+        stroka += '   %4s%3s%2.8s%3s%2s%2s%3s%2s%3s%2s \n' % ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         num = 0
+        str_num2 = 1
         stroka += '   '
         for x in self.deck:
             if num != 11:
                 stroka += f'{x} '
                 num += 1
             else:
-                stroka += f'{x}\n   '
+                stroka += f'{x}\n'
+                if str_num2 < 10:
+                    stroka += f'{str_num2}  '
+                    str_num2 += 1
+                elif str_num2 == 10:
+                    stroka += f'{str_num2} '
+                    str_num2 += 1
+                else:
+                    stroka += f'   '
+
                 num = 0
 
+
         stroka2 = ''
-        stroka2 += '   %4s%3s%2.8s%3s%2s%3s%3s%3s%2s%3s \n' % ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
+        stroka2 += '   %4s%3s%2.8s%3s%2s%2s%3s%2s%3s%2s \n' % ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         num = 0
         str_num = 1
         stroka2 += '   '

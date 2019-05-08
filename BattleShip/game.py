@@ -203,6 +203,7 @@ def battle(game_set):
         try:
             print(f'Сейчас стреляет игрок {player.player_name}')
             print('Куда будем стрелять? ')
+
             vector = input('Введите английскую букву от A до J: ')
             num = int(input('Введите номер оси Y: '))
 
@@ -214,12 +215,15 @@ def battle(game_set):
             print('Вы ввели НЕ ЧИСЛО')
             return True
 
+    socer = [[], []]  # В список записываются убитые корабли.
+    index = 0
 
-    while True:  # Цикл игры
-        index = 0
+    while len(socer[0]) < 10 or len(socer[1]) < 10:  # Цикл игр
+
         players = [game_set.player1, game_set.player2]
 
         if index == 0:   # Стрелят игрок 1 в игрока 2
+            print(index)
             shot_index = shot(players[index])
             deck = game_set.player2.deck     # Доска врага.
 
@@ -227,29 +231,64 @@ def battle(game_set):
 
             if deck[shot_index].status == 3:
                 deck[shot_index].name = '▣'
-                deck[shot_index].status = 2
                 war[shot_index].name = '▣'
 
                 fire = deck[shot_index].damage(shot_index)
 
-                print(game_set.player2)
-                print(game_set.player1)
+                if fire == 'kill':
+                    socer[0].append(1)
+
+                else:
+                    continue
 
             elif deck[shot_index].status == 0:
+                index = 1
 
-                print('Промазал =(')
+                print(f'Промазал =( Теперь ходит игрок {game_set.player2.player_name}')
+                time.sleep(3)
                 war[shot_index].name = '🞔'
 
                 deck[shot_index].name = '🞔'
                 deck[shot_index].status = 2
 
             else:
+                # import pdb
+                # pdb.set_trace()
+                print(deck[shot_index].status)
                 print('что-то пошло не так')
 
 
         elif index == 1:  # Стрелят игрок 2 в игрока 1
             shot_index = shot(players[index])
             deck = game_set.player1.deck
+
+            war = game_set.player2.deck_war  # Доска для отметок
+
+            if deck[shot_index].status == 3:
+                print('ПОПАЛ :D ')
+                deck[shot_index].name = '▣'
+                war[shot_index].name = '▣'
+
+                fire = deck[shot_index].damage(shot_index)
+
+                if fire == 'kill':
+                    socer[1].append(1)
+
+                else:
+                    continue
+
+            elif deck[shot_index].status == 0:
+
+                print(f'Промазал =( Теперь ходит игрок {game_set.player1.player_name}')
+                time.sleep(3)
+                war[shot_index].name = '🞔'
+
+                deck[shot_index].name = '🞔'
+                deck[shot_index].status = 2
+                index = 0
+
+            else:
+                print('что-то пошло не так')
 
         else:
             print('Ошибка индекса')
