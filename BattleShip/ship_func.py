@@ -1,16 +1,16 @@
 class Ship():
     def __init__(self, type, start, vector, deck, dekc_war):
         self.status = 3           # Для понимания что это корабль.
-        self.health = type        # Тип коробля, он же его здоровье.
-        self.start_index = start  # Стартовый индекс позиции коробля.
+        self.health = type        # Тип корабля, он же его здоровье.
+        self.start_index = start  # Стартовый индекс позиции корабля.
         self.deck = deck          # Экземпляр доски окраски границ.
         self.type = type          # Для последующий итерации.
-        self.vector = vector      # Направление коробля.
+        self.vector = vector      # Направление корабля.
         self.deck_war = dekc_war  # Доска для отметки выстрелов.
 
 
     def auto_building(self):
-        '''Данный метод украден из функции авторасстановки кораблей, и позволяет проверить возможность постройки
+        '''Данный метод украден из функции авто расстановки кораблей, и позволяет проверить возможность постройки
         корабля, в случае возможности, выполнить заполнение клеток.'''
         def ship_point(vector, start_point, ship, deck, deck_war):
 
@@ -32,12 +32,12 @@ class Ship():
 
             if vector == 'up':
                 if start_index:
-                    # проходим в цикле по длинне коробля, +1 что бы замкнуть контур допустимного ариола.
+                    # проходим в цикле по длине корабля, +1 что бы замкнуть контур допустимого.
                     valid_num = 0
                     nums = start_point
                     for _ in range(ship):  # в ship должны попадать КЛЮЧИ (то есть сами значения количества клеток)
                         next_index = nums  # Первое движение вверх.
-                        # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
+                        # Ожидаем получить True, в противном случае возвращаем False и ищем другую точку и вектор.
                         point = ship_check(next_index)
                         right_index = ship_check(next_index + 1)
                         lift_index = ship_check(next_index - 1)
@@ -53,7 +53,7 @@ class Ship():
                         nums -= 12
 
                     valid = start_point - ship * 12
-                    # Проверят, не заняти ли последняя клетка и её соседи.
+                    # Проверят, не занята ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 1) and ship_check(valid - 1):
                         if ship_check(start_point + 12) and ship_check(start_point + 13) and ship_check(
                                 start_point + 11):
@@ -86,7 +86,7 @@ class Ship():
                     nums = start_point
                     for _ in range(ship):
                         next_index = nums  # Первое движение вверх.
-                        # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
+                        # Ожидаем получить True, в противном случае возвращаем False и ищем другую точку и вектор.
                         point = ship_check(next_index)
                         right_index = ship_check(next_index + 1)
                         lift_index = ship_check(next_index - 1)
@@ -103,7 +103,7 @@ class Ship():
                         nums += 12
 
                     valid = start_point + ship * 12
-                    # Проверят, не заняти ли последняя клетка и её соседи.
+                    # Проверят, не занята ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 1) and ship_check(valid - 1):
                         if ship_check(start_point - 12) and ship_check(start_point - 13) and ship_check(
                                 start_point - 11):
@@ -142,7 +142,7 @@ class Ship():
 
                     for _ in range(ship):
                         next_index = nums  # Первое движение вверх.
-                        # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
+                        # Ожидаем получить True, в противном случае возвращаем False и ищем другую точку и вектор.
                         point = ship_check(next_index)
                         right_index = ship_check(next_index + 12)
                         lift_index = ship_check(next_index - 12)
@@ -158,7 +158,7 @@ class Ship():
                     valid = start_point - ship
                     valid_start = start_point + 1
 
-                    # Проверят, не заняти ли последняя клетка и её соседи.
+                    # Проверят, не занята ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(valid_start - 12):
                             korablik = Ship(ship, start_point, vector, deck, deck_war)
@@ -187,7 +187,7 @@ class Ship():
                     nums = start_point
                     for _ in range(ship):
                         next_index = nums  # Первое движение вверх.
-                        # Ожидаем получить True, в пративном случае возвращаем False и ищем другую точку и вектор.
+                        # Ожидаем получить True, в противном случае возвращаем False и ищем другую точку и вектор.
                         point = ship_check(next_index)
                         right_index = ship_check(next_index + 12)
                         lift_index = ship_check(next_index - 12)
@@ -200,7 +200,7 @@ class Ship():
                         nums += 1
                     valid = start_point + ship
                     valid_start = start_point - 1
-                    # Проверят, не заняти ли последняя клетка и её соседи.
+                    # Проверят, не занята ли последняя клетка и её соседи.
                     if ship_check(valid) and ship_check(valid + 12) and ship_check(valid - 12):
                         if ship_check(valid_start) and ship_check(valid_start + 12) and ship_check(
                                 valid_start - 12):

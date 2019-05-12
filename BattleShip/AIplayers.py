@@ -38,20 +38,20 @@ class AI_player:
     def shot(self, shot_index):
 
         """Производит выстрел, если это возможно, если нет, возвращает статус клетки"""
-        if hasattr(self.deck[shot_index], 'status'):  # Проверям, есть ли клетки атрибут "статус".
-            # Провермя возможность произвести выстрел.
+        if hasattr(self.deck[shot_index], 'status'):  # Проверяем, есть ли клетки атрибут "статус".
+            # Проверяем возможность произвести выстрел.
             status = self.deck[shot_index].status
 
-            # Если статус клетки "пустая", производитм выстрел, возвращем False = Промах
+            # Если статус клетки "пустая", производит выстрел, возвращаем False = Промах
             if self.deck[shot_index].status == 0:
                 self.deck[shot_index].status = 2   # Меняем статус на "выстрел".
-                self.deck[shot_index].name = '▣'  # Окрашеваем клетку.
+                self.deck[shot_index].name = '▣'   # Окрашиваем клетку.
                 return False
 
-            elif self.deck[shot_index].status == 3:  # Провермям находиться на клетки корабль.
+            elif self.deck[shot_index].status == 3:  # Проверяем находиться на клетки корабль.
                 shot = self.deck[shot_index].damage(shot_index)  # Записываем ответ от функции damage
 
-                if shot == 'kill':  # При возвращаении 'kill' следует что корабль был убит.
+                if shot == 'kill':  # При возвращении 'kill' следует что корабль был убит.
                     self.vector = 0
                     self.error_mem = 0
                     return 'kill'
@@ -83,7 +83,7 @@ class AI_player:
                 else:
                     return f'Что-то непонятное со статусом {self.deck[shot_index].status}'
 
-            elif type(self.deck[shot_index]) == str:  # Случай попытки повтороного выстрела в ту же клетку.
+            elif type(self.deck[shot_index]) == str:  # Случай попытки повторного выстрела в ту же клетку.
                 return 'сюда уже стрелял'
 
             else:
@@ -116,7 +116,7 @@ class AI_player:
         vectors = [-1, +1, +12, -12]
 
         if bool(self.memory[-1]) == False:             # В случае если попаданий не было.
-            index = self.random_shot_index()  # Получаем индекс для выстрела.
+            index = self.random_shot_index()           # Получаем индекс для выстрела.
             shot = self.shot(index)
 
             if shot == 'kill':
@@ -134,7 +134,7 @@ class AI_player:
 
         elif len(self.memory[-1]) == 1:
             shot_index = self.memory[-1][0] + vectors[self.vector]
-            validator = valid_shot(shot_index)           # Проверям доступность выстрела.
+            validator = valid_shot(shot_index)           # Проверяем доступность выстрела.
 
             print(shot_index)
             print(self.vector)
@@ -156,10 +156,10 @@ class AI_player:
 
             else:
                 print('Выстрел невозможен, валидатор вернул False')
-                """Всегда возвращаем True поскольку данных ход является ошибочным, и не затрачивает дейсвтие."""
+                """Всегда возвращаем True поскольку данных ход является ошибочным, и не затрачивает действие."""
 
                 if len(self.memory[-1]) > 2:   # Если выстрелов было больше одного, значит вектор был верным.
-                    # Инверсиурем вектор направления.
+                    # Инверсионный вектор направления.
 
                     if self.vector == 0:    # -1
                         self.vector = 1
@@ -192,11 +192,11 @@ class AI_player:
 
                     else:
                         return f'что-то пошло не так в исключении, вектор = {self.vector}, ' \
-                            f'\nсостоятие память {self.memory[-1]}'
+                            f'\nсостояние память {self.memory[-1]}'
 
         elif len(self.memory[-1]) > 1:
             shot_index = self.memory[-1][-1] + vectors[self.vector]
-            validator = valid_shot(shot_index)  # Проверям доступность выстрела.
+            validator = valid_shot(shot_index)  # Проверяем доступность выстрела.
             if validator:
                 shot = __class__.shot(self, shot_index)  # Производим выстрел.
 
@@ -234,7 +234,7 @@ class AI_player:
 
 
                 else:
-                    return f'Ошибка на втором индекси памяти. Индекс выстрела = {shot_index},' \
+                    return f'Ошибка на втором индекс памяти. Индекс выстрела = {shot_index},' \
                         f' \nВалидатор вернул {validator}'
 
             else:
