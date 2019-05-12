@@ -4,19 +4,20 @@ import time
 from main import *
 
 class Game:
+    liters = {
+        'A': 1,
+        'B': 2,
+        'C': 3,
+        'D': 4,
+        'E': 5,
+        'F': 6,
+        'G': 7,
+        'H': 8,
+        'I': 9,
+        'J': 10
+    }
+
     def __init__(self, player1, player2):
-        self.liters = {
-            'A': 1,
-            'B': 2,
-            'C': 3,
-            'D': 4,
-            'E': 5,
-            'F': 6,
-            'G': 7,
-            'H': 8,
-            'I': 9,
-            'J': 10
-        }
 
         self.shot_index = {
             1: [i for i in range(12, 23)],
@@ -43,7 +44,7 @@ class Game:
     def navigation(self, liter, num):
         """Возвращает индекс запрашиваемого квадрата"""
 
-        liter_index = self.liters.get(liter.upper())
+        liter_index = Game.liters.get(liter.upper())
 
         if liter_index != None:
             index = self.shot_index.get(num)
@@ -75,7 +76,7 @@ class Game:
                     ''')
                     vector = int(input('Введите НОМЕР вектора по которому будет поставлен кораблик (0 - 3) : '))
 
-                    if liter.upper() in self.liters.keys():
+                    if liter.upper() in liters.keys():
                         if 0 < num <= 10:
                             if 0 <= vector <= 3:
                                 index = __class__.navigation(self, liter, num)
@@ -123,7 +124,7 @@ class Game:
                     ''')
                     vector = int(input('Введите НОМЕР вектора по которому будет поставлен кораблик (0 - 3) : '))
 
-                    if liter.upper() in self.liters.keys():
+                    if liter.upper() in liters.keys():
                         if 0 < num <= 10:
                             if 0 <= vector <= 3:
                                 index = __class__.navigation(self, liter, num)
@@ -184,11 +185,19 @@ def battle(game_set):
             print('Куда будем стрелять? ')
 
             vector = input('Введите английскую букву от A до J: ')
-            num = int(input('Введите номер оси Y: '))
+            if vector.upper() in Game.liters.keys():
+                num = int(input('Введите номер оси Y: '))
+                if 0 < num <= 10:
+                    shot_index = game_set.navigation(vector, num)
+                    return shot_index
 
-            shot_index = game_set.navigation(vector, num)
+                else:
+                    print('Цифра должна быть от 1 до 10')
+                    return True
 
-            return shot_index
+            else:
+                print('Такой буквы у нас нет =(')
+                return True
 
         except ValueError:
             print('Вы ввели НЕ ЧИСЛО')
@@ -279,18 +288,33 @@ def battle(game_set):
 
 def ai_battle(game_set):
 
+    if game_set.player2.player_name == 'AI normal':
+        ai = Ai_normal(game_set.player1.deck)
+        print('Нормал')
+
+    elif game_set.player2.player_name == 'AI':
+        ai = AI_player(game_set.player1.deck)
+        print('Обычный')
+
     def shot(player):
         try:
             print(f'Сейчас стреляет игрок {player.player_name}')
+            print(game_set.player1)
             print('Куда будем стрелять? ')
-            print(player)
 
             vector = input('Введите английскую букву от A до J: ')
-            num = int(input('Введите номер оси Y: '))
+            if vector.upper() in Game.liters.keys():
+                num = int(input('Введите номер оси Y: '))
+                if 0 < num <= 10:
+                    shot_index = game_set.navigation(vector, num)
+                    return shot_index
+                else:
+                    print('Цифра должна быть от 1 до 10')
+                    return True
 
-            shot_index = game_set.navigation(vector, num)
-
-            return shot_index
+            else:
+                print('Такой буквы у нас нет =(')
+                return True
 
         except ValueError:
             print('Вы ввели НЕ ЧИСЛО')
@@ -333,10 +357,9 @@ def ai_battle(game_set):
                 deck[shot_index].status = 2
 
             else:
-                print(f'что-то пошло не так, текущий статус = {deck[shot_index].status}')
+                print(f'Невозможно произвести выстрел')
 
         elif index == 1:                      # Стрелят ИИ
-            ai = AI_player(game_set.player1.deck)
             play_ai = ai.play()
             if play_ai == False:
                 print('Компютер промохнулся =)')
@@ -416,7 +439,13 @@ while True:  # Цикл основного меню.
                     print(ai_battle(game_set))
 
                 elif ai_menu == 2:
-                    pass
+                    game_set = Game('Игрок 1', 'AI normal')
+                    game_set.player2.auto_ships(game_set.player1.deck_war)
+                    game_set.player1.auto_ships(game_set.player2.deck_war)
+                    print(game_set.player2)
+                    print(game_set.player1)
+
+                    print(ai_battle(game_set))
 
                 elif ai_menu == 3:
                     pass

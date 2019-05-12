@@ -14,6 +14,21 @@ def logger(func):
 
 class AI_player:
     def __init__(self, war_deck):
+        self.index = 0
+        self.move = [
+            # Тактика подразумевает наклонное движение.
+            [i for i in range(13, 23, 2)],
+            [i for i in range(26, 36, 2)],
+            [i for i in range(38, 47, 2)],
+            [i for i in range(49, 59, 2)],
+            [i for i in range(63, 71, 2)],
+            [i for i in range(73, 83, 2)],
+            [i for i in range(86, 95, 2)],
+            [i for i in range(97, 107, 2)],
+            [i for i in range(110, 119, 2)],
+            [i for i in range(123, 132, 2)]
+        ]
+
         self.deck = war_deck  # Доска с кораблями противника.
         self.memory = [[]]    # Память, из списка удачных выстрелов.
         self.vector = 0
@@ -89,7 +104,6 @@ class AI_player:
     @logger
     def play(self):
 
-
         def valid_shot(index):
 
             if hasattr(self.deck[index], 'status'):
@@ -101,10 +115,9 @@ class AI_player:
 
         vectors = [-1, +1, +12, -12]
 
-
         if bool(self.memory[-1]) == False:             # В случае если попаданий не было.
-            index = __class__.random_shot_index(self)  # Получаем индекс для выстрела.
-            shot = __class__.shot(self, index)
+            index = self.random_shot_index()  # Получаем индекс для выстрела.
+            shot = self.shot(index)
 
             if shot == 'kill':
                 self.memory[-1] = 'KILL'
@@ -273,3 +286,49 @@ class AI_player:
                             f'\nсостоятие память {self.memory[-1]}'
         else:
             return 'Что-то очень странное'
+
+
+class Ai_normal(AI_player):
+    '''Переопределяем метод случайно стрельбы на тактику.'''
+
+    @logger
+    def random_shot_index(self):
+        """Суть метода, дать как можно более чистый индекс для будущего выстрела."""
+
+        print('Работает новый')
+
+        @logger
+        def tactics_shot():
+            index = 0  # Указывает на текущий индекс стрельбы.
+            if len(self.move) > 1:
+
+                if len(self.move[index]) > 1:
+                    return self.move[index].pop(0)
+
+                elif len(self.move[index]) == 1:
+                    value = self.move[index].pop(0)
+                    del self.move[index]
+                    return value
+
+                else:
+                    return True
+            else:
+                return False
+
+        while True:
+
+            shot = tactics_shot()
+            print(shot)
+            if shot:
+                if hasattr(self.deck[shot], 'status'):
+                    status = self.deck[shot].status
+                    if status != 1 and status != 2 and status != 4:
+                        return shot
+
+            else:
+                index = random.randrange(len(self.deck))
+
+                if hasattr(self.deck[index], 'status'):
+                    status = self.deck[index].status
+                    if status != 1 and status != 2 and status != 4:
+                        return index
